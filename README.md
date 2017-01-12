@@ -18,7 +18,33 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Configuration
+
+    Cardinity.configure!(options)
+    
+Where options should contain:
+ - key
+ - secret
+ - api_base (optional, if you want to point the requests somewhere else than Cardinity servers)
+
+### Creating Payments
+
+    Cardinity.create_payment(payment_data)
+
+Where `payment_data` is a plain `Hash`. See rdoc or [Cardinity API doc](https://developers.cardinity.com/api/v1/) to see
+what attributes are allowed and required.
+
+    Cardinity.finalize_payment(payment_id, authorization_data)
+
+Where `payment_id` is an id of previously created payment and `authorization_data` is
+a `Hash` with single key `authorize_data`.
+
+### Other stuff
+
+    Cardinity.payments
+
+Returns the last 10 payments made.
+
 
 ## Development
 
