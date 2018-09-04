@@ -1,14 +1,21 @@
+# frozen_string_literal: true
+
+require 'uri'
+
 module Cardinity
 
-  CODES_WITH_RESPONSE = [200, 201, 202, 400, 402]
+  CODES_WITH_RESPONSE = [200, 201, 202, 400, 401, 402, 405, 500, 503]
 
   def self.check_payment_data(payment)
     payment = payment.dup
-    if payment[:payment_method].nil?
-      payment[:payment_method] = 'card'
+    payment_method = payment['payment_method'] || payment[:payment_method]
+    if payment_method.nil?
+      payment['payment_method'] = 'card'
     end
-    if payment[:amount].is_a?(Numeric)
-      payment[:amount] = '%.2f' % payment[:amount]
+    amount = payment['amount'] || payment[:amount]
+    if amount.is_a?(Numeric)
+      payment.delete(:amount)
+      payment['amount'] = format('%.2f', amount)
     end
     payment
   end
@@ -37,8 +44,10 @@ module Cardinity
     end
   end
 
-  def self.get(uri)
-    RestClient.get uri, headers(:get, uri)
+  def self.get(base_url, params = {})
+    uri = URI.parse(base_url)
+    uri.query = URI.encode_www_form(params)
+    RestClient.get uri.to_s, headers(:get, base_url, params)
   rescue RestClient::ExceptionWithResponse => e
     handle_error_response e
   end
@@ -55,10 +64,10 @@ module Cardinity
     handle_error_response e
   end
 
-  def self.headers(method, uri)
+  def self.headers(method, uri, params = {})
     {
         content_type: 'application/json',
-        authorization: @auth.sign_request(method, uri)
+        authorization: @auth.sign_request(method, uri, params)
     }
   end
 

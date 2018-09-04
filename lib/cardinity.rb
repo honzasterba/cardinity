@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cardinity/version'
 require 'cardinity/utils'
 require 'cardinity/auth'
@@ -67,9 +69,17 @@ module Cardinity
     parse patch(payment_uri(payment_id), serialize(authorize_hash))
   end
 
-  # Get list of all payments
-  def self.payments
-    parse get(payments_uri)
+  # Get list of the last payments.
+  # By default, cardinity returns 10 payments. Pass `limit` to override.
+  def self.payments(limit: nil)
+    query = {}
+    query[:limit] = limit if limit
+    parse get(payments_uri, query)
+  end
+
+  # Get the payment information for the given payment ID.
+  def self.payment(payment_id)
+    parse get(payment_uri(payment_id))
   end
 
 end
