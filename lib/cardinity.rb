@@ -82,4 +82,13 @@ module Cardinity
     parse get(payment_uri(payment_id))
   end
 
+  # Get all the refunds for the given payment ID.
+  def self.refunds(payment_id)
+    parse get(refunds_uri(payment_id))
+  end
+
+  # Get the refund for the given payment ID and refund ID.
+  def self.refund(payment_id, refund_id)
+    parse get(refund_uri(payment_id, refund_id))
+  end
 end

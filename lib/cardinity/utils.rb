@@ -28,6 +28,14 @@ module Cardinity
     "#{api_base}#{API_PAYMENTS}/#{payment_id}"
   end
 
+  def self.refunds_uri(payment_id)
+    "#{api_base}#{API_PAYMENTS}/#{payment_id}/refunds"
+  end
+
+  def self.refund_uri(payment_id, refund_id)
+    "#{api_base}#{API_PAYMENTS}/#{payment_id}/refunds/#{refund_id}"
+  end
+
   def self.parse(response)
     JSON.parse response.body
   end
