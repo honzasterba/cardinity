@@ -1,5 +1,7 @@
 # Cardinity
 
+[![Build Status](https://travis-ci.com/honzasterba/cardinity.svg?branch=master)](https://travis-ci.com/honzasterba/cardinity)
+
 ## Installation
 
 Add this line to your application's Gemfile:
