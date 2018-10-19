@@ -17,7 +17,7 @@ class CardinityTest < Minitest::Test
           exp_year: 2018,
           exp_month: 11,
           cvc: 123,
-          holder: "Jan Štěrba"
+          holder: "John Doe"
       }
     }
   end
