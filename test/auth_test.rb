@@ -7,7 +7,7 @@ class AuthTest < Minitest::Test
   end
 
   def test_escape
-    assert_equal "just%20test%2Bdata%2A", @auth.escape("just test+data*")
+    assert_equal "just+test%2Bdata*", @auth.escape("just test+data*")
   end
 
   def test_signature

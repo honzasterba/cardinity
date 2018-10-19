@@ -1,12 +1,11 @@
 require 'base64'
-require 'openssl/digest'
+require 'openssl'
 require 'uri'
 require 'cgi'
 
 class Cardinity::Auth
 
   OAUTH_VERSION = '1.0'
-  RESERVED_CHARACTERS = /[^a-zA-Z0-9\-._~]/
   SIGNATURE_METHOD = 'HMAC-SHA1'
 
   def initialize(config)
@@ -44,7 +43,7 @@ class Cardinity::Auth
   end
 
   def escape(string)
-    URI.escape(string, RESERVED_CHARACTERS)
+    URI.encode_www_form_component(string)
   end
 
   def generate_base_string(method, url, params)

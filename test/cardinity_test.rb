@@ -82,5 +82,4 @@ class CardinityTest < Minitest::Test
     assert_equal Cardinity::STATUS_DECLINED, patch_result["status"]
   end
 
-
 end
