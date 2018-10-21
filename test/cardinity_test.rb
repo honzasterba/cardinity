@@ -32,6 +32,22 @@ class CardinityTest < Minitest::Test
     assert Cardinity.payments.is_a?(Array)
   end
 
+  def test_fetch_payment
+    payment_id = Cardinity.create_payment(@payment_data)['id']
+    assert_equal Cardinity.payment(payment_id)['id'], payment_id
+  end
+
+  def test_refund
+    payment_id = Cardinity.create_payment(@payment_data)['id']
+    create_refund_response = Cardinity.create_refund(
+      payment_id, amount: @payment_data[:amount], description: 'test refund'
+    )
+    assert_equal create_refund_response['description'], 'test refund'
+    refund_id = create_refund_response['id']
+    assert_equal Cardinity.refund(payment_id, refund_id)['id'], refund_id
+    assert_equal Cardinity.refunds(payment_id)[0]['id'], refund_id
+  end
+
   VISA_1 = "4111111111111111"
 
   VISA_2 = "4222222222222"
