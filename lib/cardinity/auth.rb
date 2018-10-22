@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'base64'
 require 'openssl'
 require 'uri'
@@ -12,16 +14,16 @@ class Cardinity::Auth
     @config = config
   end
 
-  def sign_request(method, uri)
+  def sign_request(method, uri, params = {})
     params = {
         oauth_consumer_key: @config[:key],
         oauth_nonce: generate_key,
         oauth_signature_method: SIGNATURE_METHOD,
         oauth_timestamp: generate_timestamp,
         oauth_version: OAUTH_VERSION
-    }
+    }.update(params)
     params[:oauth_signature] = request_signature(method, uri, params)
-    params_str = params.collect { |k, v| "#{k}=\"#{escape(v)}\"" }.join(', ')
+    params_str = params.map { |k, v| "#{k}=\"#{escape(v.to_s)}\"" }.join(', ')
     "OAuth #{params_str}"
   end
 
