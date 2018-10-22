@@ -6,8 +6,9 @@ class CardinityTest < Minitest::Test
 
   def setup
     env_key = ENV["CRD_KEY"]
+    assert env_key, "Environment variables CRD_KEY and CRD_SECRET required. (CRD_KEY missing)"
     env_secret = ENV["CRD_SECRET"]
-    assert env_key && env_secret, "Environment variables CRD_KEY and CRD_SECRET required"
+    assert env_secret, "Environment variables CRD_KEY and CRD_SECRET required. (CRD_SECRET missing)"
     Cardinity.configure! key: env_key, secret: env_secret
     @payment_data = {
       amount: 11,
